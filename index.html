@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Williams & Shirry Construction</title>
+  <style>
+    :root { --header-h: 60px; }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+    /* Header */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex; align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      background: transparent;
+      transition: background-color 300ms ease, box-shadow 300ms ease;
+    }
+    .header.scrolled {
+      background: rgba(0,0,0,0.95);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    .nav { width: 100%; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .logo { font-weight: 800; color: #fff; text-decoration: none; letter-spacing: .5px; font-size: 14px; }
+
+    .menu { display: flex; align-items: center; gap: 14px; }
+    .menu a { text-decoration: none; color: #fff; font-size: 13px; font-weight: 500; }
+    .menu span { color: rgba(255,255,255,0.6); font-size: 13px; }
+
+    /* Main */
+    main { background: #fff; color: #111; }
+
+    /* Hero */
+    .hero { position: relative; height: 100vh; overflow: hidden; }
+    .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .overlay {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      text-align: center; padding: 16px;
+    }
+    /* Title + subtle hover motion */
+    #brandTitle {
+      color: #fff;
+      font-size: clamp(32px, 6vw, 64px);
+      font-weight: 800; margin: 0;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.65);
+      transition: transform 160ms ease, text-shadow 160ms ease;
+      will-change: transform;
+      cursor: default;
+    }
+    #brandTitle:hover {
+      transform: translateY(-3px);
+      text-shadow: 0 4px 20px rgba(0,0,0,0.75);
+    }
+    .tagline {
+      margin-top: 10px;
+      color: #fff;
+      font-size: clamp(14px, 2.4vw, 20px);
+      letter-spacing: .2px;
+      opacity: 0.95;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.55);
+    }
+
+    /* Intro card */
+    .intro-wrap { margin: 1in; }
+    @media (max-width: 900px) { .intro-wrap { margin: 24px; } }
+    .intro-card {
+      background: #fff; color: #111;
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12), 0 6px 18px rgba(0,0,0,0.08);
+      padding: clamp(20px, 4vw, 40px);
+    }
+    .intro-card p { margin: 0; font-size: clamp(16px, 2.2vw, 20px); line-height: 1.6; }
+
+    /* Section title */
+    .section-title { font-size: clamp(28px, 6vw, 48px); font-weight: 800; text-align: center; margin: 60px 0 30px; font-family: 'Georgia', serif; }
+
+    /* Projects section */
+    .project { display: flex; align-items: center; gap: 32px; margin: 0 auto 80px; max-width: 1200px; height: 66vh; }
+    .img-wrap { position: relative; width: 50%; height: 100%; margin-left: 1cm; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.55); color: #fff; border: none; display: grid; place-items: center; cursor: pointer; opacity: 0; transition: opacity 200ms ease, background 200ms ease; }
+    .nav-btn:hover { background: rgba(0,0,0,0.75); }
+    .img-wrap:hover .nav-btn { opacity: 1; }
+    .nav-left { left: 12px; }
+    .nav-right { right: 12px; }
+
+    .dots { display: flex; justify-content: center; gap: 6px; position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 200ms ease; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #888; cursor: pointer; transition: background 200ms ease; }
+    .dot.active { background: #fff; }
+    .img-wrap:hover .dots { opacity: 1; }
+
+    .project-details { width: calc(50% - 1cm - 32px); min-width: 320px; font-size: 18px; line-height: 1.7; }
+    .project-details h3 { font-size: 26px; margin: 0 0 16px; font-weight: 800; }
+    .project-details p { margin: 6px 0; }
+
+    /* Footer */
+    footer { background: #000; color: #fff; padding: 40px 24px; text-align: center; }
+    footer .links { margin-top: 12px; }
+    footer .links a { color: #fff; text-decoration: none; margin: 0 12px; font-size: 14px; opacity: 0.85; }
+    footer .links a:hover { opacity: 1; }
+
+    @media (max-width: 900px) {
+      .project { flex-direction: column; height: auto; padding: 0 24px; }
+      .img-wrap { width: 100%; height: 260px; margin-left: 0; }
+      .project-details { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="siteHeader">
+    <nav class="nav">
+      <a href="#" class="logo">WILLIAMS & SHIRRY</a>
+      <div class="menu">
+        <a href="#about">About Us</a><span>|</span>
+        <a href="#projects">Projects</a><span>|</span>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <video autoplay loop muted playsinline>
+        <source src="reaver-jett-sunset.mp4" type="video/mp4">
+      </video>
+      <div class="overlay">
+        <div>
+          <h1 id="brandTitle">Williams and Shirry Construction</h1>
+          <div class="tagline">Quality and Care in Construction</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intro card -->
+    <section class="intro-wrap" id="about">
+      <div class="intro-card">
+        <p>
+          We are a leading WA commercial construction company specialising in
+          commercial construction, fitout and refurbishment.
+        </p>
+      </div>
+    </section>
+
+    <!-- Past Projects -->
+    <h2 class="section-title">Past Projects</h2>
+
+    <section class="project" id="projects">
+      <div class="img-wrap">
+        <img id="projectImg" src="house1.jpg" alt="House project">
+        <button class="nav-btn nav-left" id="prevBtn">&#10094;</button>
+        <button class="nav-btn nav-right" id="nextBtn">&#10095;</button>
+        <div class="dots" id="dots"></div>
+      </div>
+
+      <div class="project-details" id="projectDetails">
+        <h3>Project Details</h3>
+        <p><strong>Name:</strong> House 1</p>
+        <p><strong>Location:</strong> Perth</p>
+        <p><strong>Size:</strong> 40 acres</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div>© 2025 Williams & Shirry Construction</div>
+    <div class="links">
+      <a href="#about">About Us</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // Header: transparent -> opaque on scroll
+    const header = document.getElementById('siteHeader');
+    const setHeader = () => {
+      if (window.scrollY > 10) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    };
+    setHeader();
+    window.addEventListener('scroll', setHeader, { passive: true });
+
+    // Project carousel with synced details
+    const projects = [
+      { img: "house1.jpg", name: "House 1", location: "Perth",     size: "40 acres" },
+      { img: "house2.jpg", name: "House 2", location: "Fremantle", size: "25 acres" },
+      { img: "house3.jpg", name: "House 3", location: "Subiaco",   size: "30 acres" },
+    ];
+    let idx = 0;
+
+    const imgEl = document.getElementById('projectImg');
+    const prev  = document.getElementById('prevBtn');
+    const next  = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('dots');
+    const detailsEl = document.getElementById('projectDetails');
+
+    projects.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => show(i));
+      dotsContainer.appendChild(dot);
+    });
+    const dots = () => Array.from(document.querySelectorAll('.dot'));
+
+    function show(n) {
+      idx = (n + projects.length) % projects.length;
+      const p = projects[idx];
+      imgEl.src = p.img;
+      detailsEl.innerHTML = `
+        <h3>Project Details</h3>
+        <p><strong>Name:</strong> ${p.name}</p>
+        <p><strong>Location:</strong> ${p.location}</p>
+        <p><strong>Size:</strong> ${p.size}</p>
+      `;
+      dots().forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+
+    prev.addEventListener('click', () => show(idx - 1));
+    next.addEventListener('click', () => show(idx + 1));
+    window.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+  </script>
+</body>
+</html>
